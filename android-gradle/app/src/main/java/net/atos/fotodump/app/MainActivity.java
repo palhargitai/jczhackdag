@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import net.atos.fotodump.app.adriaan.rest.FotoObject;
+import net.atos.fotodump.app.adriaan.rest.RESTAsyncTask;
 import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
@@ -134,14 +135,6 @@ public class MainActivity extends Activity {
 
             this.showProgressDialog("Bezig met uploaden van foto naar Adriaans REST service");
 
-            // The URL for making the GET request
-            final String url = "http://161.90.26.139:8080/fotodump";
-
-            HttpHeaders requestHeaders = new HttpHeaders();
-            requestHeaders.setAcceptEncoding(ContentCodingType.GZIP);
-
-            RestTemplate restTemplate = new RestTemplate();
-            restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -151,7 +144,7 @@ public class MainActivity extends Activity {
             fotoObject.setNaam(naam.getText().toString());
             fotoObject.setContent(byteArray);
 
-            restTemplate.put(url, FotoObject.class);
+            new RESTAsyncTask().execute(fotoObject);
 
             this.dismissProgressDialog();
 
