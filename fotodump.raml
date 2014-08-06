@@ -17,4 +17,24 @@ securitySchemes:
           Location:
             type: string
       400:
-
+  /{id}:
+    get:
+      body:
+        application/octet-stream:
+      responses:
+        200:
+        404:
+    /tag:
+      post:
+        body:
+          application/json:
+        responses:
+          200:
+          400:
+          404:
+      get:
+        body:
+          application/json:
+        responses:
+          200:
+          404:
