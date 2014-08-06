@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/fotodump")
 public class FotoController {
 
-    private final Map<String,Foto> fotos = new HashMap<>();
+    private final Map<String, Foto> fotos = new HashMap<>();
 
     @RequestMapping(value = "/{naam}", method = RequestMethod.GET)
     public Foto get(@PathVariable final String name) {
@@ -42,8 +42,9 @@ public class FotoController {
         return fotos.values();
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public String toevoegenFoto(@RequestParam("naam") final String name, @RequestParam("content") final MultipartFile file) {
+    @RequestMapping(method = RequestMethod.POST)
+    public String toevoegenFoto(@RequestParam(value = "naam", required = true) final String name,
+                                @RequestParam(value = "content", required = true) final MultipartFile file) {
 
         if (!file.isEmpty()) {
             try {
