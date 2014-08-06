@@ -26,12 +26,12 @@ public class FotoController {
 
     private final Map<String,Foto> fotos = new HashMap<>();
 
-    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{naam}", method = RequestMethod.GET)
     public Foto get(@PathVariable final String name) {
         return fotos.get(name);
     }
 
-    @RequestMapping(value = "/{name}/content", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    @RequestMapping(value = "/{naam}/content", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getContent(@PathVariable final String name) {
         final byte[] content = fotos.get(name).getContent();
 
@@ -44,7 +44,7 @@ public class FotoController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String post(@RequestParam("name") final String name, @RequestParam("content") final MultipartFile file) {
+    public String post(@RequestParam("naam") final String name, @RequestParam("content") final MultipartFile file) {
 
         if (!file.isEmpty()) {
             try {
