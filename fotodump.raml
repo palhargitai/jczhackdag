@@ -1,0 +1,20 @@
+#%RAML 0.8
+title: Fotodump
+baseUri: /fotodump
+securitySchemes:
+  - oauth:
+      type:
+        Basic Authentication
+
+/fotodump:
+  displayName: Foto dump
+  post:
+    body:
+      application/octet-stream:
+    responses:
+      303:
+        headers:
+          Location:
+            type: string
+      400:
+
