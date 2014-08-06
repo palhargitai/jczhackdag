@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">Fotodump</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="neem_foto">Neem eerst de foto die u wilt gaan taggen</string>
+    <string name="neem_foto_button">Neem foto</string>
     <string name="action_settings">Settings</string>
 
 </resources>
