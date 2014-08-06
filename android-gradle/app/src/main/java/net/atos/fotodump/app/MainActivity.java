@@ -7,17 +7,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import net.atos.fotodump.app.helma.rest.FotoObject;
-import net.atos.fotodump.app.helma.rest.RESTAsyncTask;
+import net.atos.fotodump.app.rest.AdriaanRESTAsyncTask;
+import net.atos.fotodump.app.rest.FotoObject;
 
 import java.io.ByteArrayOutputStream;
 
@@ -133,7 +129,7 @@ public class MainActivity extends Activity {
             fotoObject.setNaam(naam.getText().toString());
             fotoObject.setContent(byteArray);
 
-            new RESTAsyncTask().execute(fotoObject);
+            new AdriaanRESTAsyncTask().execute(fotoObject);
 
             this.dismissProgressDialog();
 

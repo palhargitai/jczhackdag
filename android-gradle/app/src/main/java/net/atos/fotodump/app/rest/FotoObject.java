@@ -1,4 +1,4 @@
-package net.atos.fotodump.app.helma.rest;
+package net.atos.fotodump.app.rest;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
