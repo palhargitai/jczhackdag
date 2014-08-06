@@ -43,8 +43,8 @@ public class FotoController {
         return fotos.values();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String post(@RequestParam("naam") final String name, @RequestParam("content") final MultipartFile file) {
+    @RequestMapping(method = RequestMethod.PUT)
+    public String toevoegenFoto(@RequestParam("naam") final String name, @RequestParam("content") final MultipartFile file) {
 
         if (!file.isEmpty()) {
             try {
