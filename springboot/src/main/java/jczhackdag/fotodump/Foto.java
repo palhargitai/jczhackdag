@@ -5,13 +5,20 @@ package jczhackdag.fotodump;
  */
 public class Foto {
 
+    private final String name;
+
     private final byte[] content;
 
-    public Foto(final byte[] content) {
+    public Foto(final String name, final byte[] content) {
         this.content = content;
+        this.name = name;
     }
 
     public byte[] getContent() {
         return content;
+    }
+
+    public String getName() {
+        return name;
     }
 }

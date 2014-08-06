@@ -2,9 +2,14 @@ package jczhackdag.fotodump;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,22 +20,31 @@ import org.springframework.web.multipart.MultipartFile;
  * @author "Adriaan Wisse (nl27523))"
  */
 @RestController
-public class FotoController {
+@RequestMapping("/fotodump")
 
-//    @RequestMapping("")
-//    public Foto post(@RequestParam(value="name", required=false, defaultValue="World") final String name) {
-//        return new Greeting(counter.incrementAndGet(),
-//    }
+public class FotoController {
 
     private final Map<String,Foto> fotos = new HashMap<>();
 
-    @RequestMapping(value = "/fotodump", method = RequestMethod.GET)
-    public Foto get(@RequestParam(value = "name", required = true) final String name) {
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public Foto get(@PathVariable final String name) {
         return fotos.get(name);
     }
 
-    @RequestMapping(value = "/fotodump", method = RequestMethod.POST)
-    public String post(@RequestParam("name") final String name, @RequestParam("file") final MultipartFile file) {
+    @RequestMapping(value = "/{name}/content", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getContent(@PathVariable final String name) {
+        final byte[] content = fotos.get(name).getContent();
+
+        return new ResponseEntity<byte[]>(content, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public Collection<Foto> list() {
+        return fotos.values();
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String post(@RequestParam("name") final String name, @RequestParam("content") final MultipartFile file) {
 
         if (!file.isEmpty()) {
             try {
@@ -43,16 +57,15 @@ public class FotoController {
                 stream.write(bytes);
                 stream.close();
 
-                final Foto foto = new Foto(byteArrayOutputStream.toByteArray());
+                final Foto foto = new Foto(name, byteArrayOutputStream.toByteArray());
                 fotos.put(name, foto);
 
-                return "You successfully uploaded file=" + name;
+                return "Bestand met naam " + name + " succesvol geupload";
             } catch (final Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
+                return "De volgende fout is opgetreden bij het uploaden van bestand met naam " + name + " => " + e.getMessage();
             }
         } else {
-            return "You failed to upload " + name
-                    + " because the file was empty.";
+            return "Bestand " + name + " is leeg.";
         }
     }
 }
