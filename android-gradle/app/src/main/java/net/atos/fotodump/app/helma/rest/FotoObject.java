@@ -1,4 +1,4 @@
-package net.atos.fotodump.app.adriaan.rest;
+package net.atos.fotodump.app.helma.rest;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -12,7 +12,7 @@ public class FotoObject {
     @JsonProperty("naam")
     private String naam;
 
-    @JsonProperty("naam")
+    @JsonProperty("content")
     private byte[] content;
 
     public String getNaam() {

@@ -1,36 +1,25 @@
 package net.atos.fotodump.app;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import net.atos.fotodump.app.adriaan.rest.FotoObject;
-import net.atos.fotodump.app.adriaan.rest.RESTAsyncTask;
-import org.springframework.http.*;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
+import net.atos.fotodump.app.helma.rest.FotoObject;
+import net.atos.fotodump.app.helma.rest.RESTAsyncTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 
 public class MainActivity extends Activity {
