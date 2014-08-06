@@ -26,13 +26,19 @@ public class FotoController {
     private final Map<String, Foto> fotos = new HashMap<>();
 
     @RequestMapping(value = "/{naam}", method = RequestMethod.GET)
-    public Foto get(@PathVariable final String name) {
-        return fotos.get(name);
+    public Foto get(@PathVariable final String naam) {
+        return fotos.get(naam);
+    }
+
+    @RequestMapping(value = "tag/{naam}/{tag}", method = RequestMethod.PUT)
+    public void tag(@PathVariable final String naam, @PathVariable final String tag) {
+        final Foto foto = fotos.get(naam);
+        foto.tag(tag);
     }
 
     @RequestMapping(value = "/{naam}/content", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getContent(@PathVariable final String name) {
-        final byte[] content = fotos.get(name).getContent();
+    public ResponseEntity<byte[]> getContent(@PathVariable final String naam) {
+        final byte[] content = fotos.get(naam).getContent();
 
         return new ResponseEntity<byte[]>(content, HttpStatus.CREATED);
     }
@@ -42,8 +48,8 @@ public class FotoController {
         return fotos.values();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String toevoegenFoto(@RequestParam(value = "naam", required = true) final String name,
+    @RequestMapping(value = "/{naam}", method = RequestMethod.POST)
+    public String toevoegenFoto(@PathVariable final String naam,
                                 @RequestParam(value = "content", required = true) final MultipartFile file) {
 
         if (!file.isEmpty()) {
@@ -57,15 +63,15 @@ public class FotoController {
                 stream.write(bytes);
                 stream.close();
 
-                final Foto foto = new Foto(name, byteArrayOutputStream.toByteArray());
-                fotos.put(name, foto);
+                final Foto foto = new Foto(naam, byteArrayOutputStream.toByteArray());
+                fotos.put(naam, foto);
 
-                return "Bestand met naam " + name + " succesvol geupload";
+                return "Bestand met naam " + naam + " succesvol geupload (PS Pascal Rulez!!!!)";
             } catch (final Exception e) {
-                return "De volgende fout is opgetreden bij het uploaden van bestand met naam " + name + " => " + e.getMessage();
+                return "De volgende fout is opgetreden bij het uploaden van bestand met naam " + naam + " => " + e.getMessage();
             }
         } else {
-            return "Bestand " + name + " is leeg.";
+            return "Bestand " + naam + " is leeg.";
         }
     }
 }
