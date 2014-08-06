@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import net.atos.fotodump.app.rest.AdriaanRESTAsyncTask;
+import net.atos.fotodump.app.rest.AdriaanRESTFotoUploadAsyncTask;
 import net.atos.fotodump.app.rest.FotoObject;
 
 import java.io.ByteArrayOutputStream;
@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
      */
     public static class PlaceholderFragment extends Fragment {
         protected Button button;
+        protected Button opnieuwButton;
         protected ImageView image;
         protected TextView field;
         protected EditText naam;
@@ -76,12 +77,25 @@ public class MainActivity extends Activity {
             image = (ImageView) rootView.findViewById(R.id.foto_image);
             field = (TextView) rootView.findViewById(R.id.foto_info_text);
             button = (Button) rootView.findViewById(R.id.foto_button);
+            opnieuwButton = (Button) rootView.findViewById(R.id.opnieuw_button);
             naam = (EditText) rootView.findViewById(R.id.naam_input);
 
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startCameraActivity();
+                }
+            });
+            opnieuwButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    image.setImageBitmap(null);
+                    naam.setText("");
+
+                    field.setVisibility(View.VISIBLE);
+                    button.setVisibility(View.VISIBLE);
+                    naam.setVisibility(View.VISIBLE);
+                    opnieuwButton.setVisibility(View.INVISIBLE);
                 }
             });
 
@@ -115,11 +129,13 @@ public class MainActivity extends Activity {
 
             image.setImageBitmap(imageBitmap);
 
-            field.setVisibility(View.GONE);
-            button.setVisibility(View.GONE);
+            field.setVisibility(View.INVISIBLE);
+            button.setVisibility(View.INVISIBLE);
+            naam.setVisibility(View.INVISIBLE);
+            opnieuwButton.setVisibility(View.VISIBLE);
+
 
             this.showProgressDialog("Bezig met uploaden van foto naar Adriaans REST service");
-
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -129,7 +145,7 @@ public class MainActivity extends Activity {
             fotoObject.setNaam(naam.getText().toString());
             fotoObject.setContent(byteArray);
 
-            new AdriaanRESTAsyncTask().execute(fotoObject);
+            new AdriaanRESTFotoUploadAsyncTask().execute(fotoObject);
 
             this.dismissProgressDialog();
 

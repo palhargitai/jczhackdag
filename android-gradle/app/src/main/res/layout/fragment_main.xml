@@ -35,5 +35,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/foto_image"/>
 
+        <Button
+            android:id="@+id/opnieuw_button"
+            android:visibility="invisible"
+            android:text="@string/opnieuw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/foto_button"/>
+
 
 </RelativeLayout>
