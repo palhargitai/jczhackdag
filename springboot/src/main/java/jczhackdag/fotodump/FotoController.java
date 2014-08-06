@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/fotodump")
-
 public class FotoController {
 
     private final Map<String,Foto> fotos = new HashMap<>();
