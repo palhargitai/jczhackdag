@@ -1,0 +1,6 @@
+name: fotodump
+version: 0.0.1
+dependencies:
+
+dev_dependencies:
+  unittest: any
