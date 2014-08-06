@@ -3,6 +3,7 @@ package net.atos.fotodump.app;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,9 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import net.atos.fotodump.app.adriaan.rest.FotoObject;
+import org.springframework.http.*;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 
@@ -64,8 +72,10 @@ public class MainActivity extends Activity {
         protected Button button;
         protected ImageView image;
         protected TextView field;
+        protected EditText naam;
         protected String path;
         protected boolean taken;
+        private ProgressDialog progressDialog;
 
         static final int REQUEST_IMAGE_CAPTURE = 0;
 
@@ -80,6 +90,8 @@ public class MainActivity extends Activity {
             image = (ImageView) rootView.findViewById(R.id.foto_image);
             field = (TextView) rootView.findViewById(R.id.foto_info_text);
             button = (Button) rootView.findViewById(R.id.foto_button);
+            naam = (EditText) rootView.findViewById(R.id.naam_input);
+
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,6 +131,46 @@ public class MainActivity extends Activity {
 
             field.setVisibility(View.GONE);
             button.setVisibility(View.GONE);
+
+            this.showProgressDialog("Bezig met uploaden van foto naar Adriaans REST service");
+
+            // The URL for making the GET request
+            final String url = "http://161.90.26.139:8080/fotodump";
+
+            HttpHeaders requestHeaders = new HttpHeaders();
+            requestHeaders.setAcceptEncoding(ContentCodingType.GZIP);
+
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            final FotoObject fotoObject = new FotoObject();
+            fotoObject.setNaam(naam.getText().toString());
+            fotoObject.setContent(byteArray);
+
+            restTemplate.put(url, FotoObject.class);
+
+            this.dismissProgressDialog();
+
+        }
+
+        private void showProgressDialog(CharSequence message) {
+            if (this.progressDialog == null) {
+                this.progressDialog = new ProgressDialog(getActivity());
+                this.progressDialog.setIndeterminate(true);
+            }
+
+            this.progressDialog.setMessage(message);
+            this.progressDialog.show();
+        }
+
+        private void dismissProgressDialog() {
+            if (this.progressDialog != null) {
+                this.progressDialog.dismiss();
+            }
         }
     }
 }

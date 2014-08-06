@@ -16,11 +16,17 @@
             android:layout_height="wrap_content"
             />
 
+        <EditText
+            android:id="@+id/naam_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/foto_info_text"/>
+
         <ImageView
             android:id="@+id/foto_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/foto_info_text"/>
+            android:layout_below="@id/naam_input"/>
 
         <Button
             android:id="@+id/foto_button"
